@@ -3,7 +3,6 @@ class AuthenticationController < ApplicationController
   skip_before_action :authenticate_request
 
   def authenticate
-    binding.pry
     command = AuthenticateUser.call(params[:email], params[:password])
     if command.success?
       render json: { auth_token: command.result }
@@ -12,5 +11,9 @@ class AuthenticationController < ApplicationController
     end
   end
 
-  
+  def authenticate_request
+    @current_user = AuthorizeApiRequest.call(request.headers).result
+
+    render json: { error: 'Not Authorized' }, status: 401 unless @current_user
+  end
 end

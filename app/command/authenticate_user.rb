@@ -1,5 +1,6 @@
 # app/commands/authenticate_user.rb
 class AuthenticateUser
+  # require JsonWebToken
   prepend SimpleCommand
 
   def initialize(email, password)
